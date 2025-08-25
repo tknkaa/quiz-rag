@@ -2,7 +2,9 @@
   pkgs ? import <nixpkgs> { },
 }:
 pkgs.mkShell {
-  nativeBuildInputs = with pkgs; [
+  buildInputs = with pkgs; [
     uv
+    stdenv.cc.cc.lib
   ];
+  LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
 }
