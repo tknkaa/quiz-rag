@@ -5,28 +5,30 @@ import os
 from qdrant_client import QdrantClient
 from qdrant_client.models import PointStruct, VectorStruct
 from qdrant_client.models import Distance, VectorParams
+from scraper import scrape_text
 
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=100,
-    chunk_overlap=20,
-    length_function=len,
-)
 
-vector_size = 768
-collection_name = "test_collection"
-google_client = genai.Client()
-contents = [
-    "What is the meaning of life?",
-    "What is the purpose of existence?",
-    "How do I bake a cake?",
-]
-qdrant_client = QdrantClient(url="http://localhost:6333")
-qdrant_client.create_collection(
-    collection_name=collection_name,
-    vectors_config=VectorParams(size=vector_size, distance=Distance.DOT),
-)
+def main():
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=100,
+        chunk_overlap=20,
+        length_function=len,
+    )
 
-if __name__ == "__main__":
+    vector_size = 768
+    collection_name = "test_collection"
+    google_client = genai.Client()
+    contents = [
+        "What is the meaning of life?",
+        "What is the purpose of existence?",
+        "How do I bake a cake?",
+    ]
+    qdrant_client = QdrantClient(url="http://localhost:6333")
+    qdrant_client.create_collection(
+        collection_name=collection_name,
+        vectors_config=VectorParams(size=vector_size, distance=Distance.DOT),
+    )
+
     if not os.environ.get("GEMINI_API_KEY"):
         print("please set your GEMINI_API_KEY")
     result = google_client.models.embed_content(
@@ -51,3 +53,7 @@ if __name__ == "__main__":
         collection_name=collection_name, wait=True, points=points
     )
     print(operation_info)
+
+
+if __name__ == "__main__":
+    main()
