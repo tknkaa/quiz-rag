@@ -2,3 +2,4 @@
 .venv
 .env
 qdrant_data/
+__pycache__
