@@ -11,4 +11,5 @@ def scrape_text(url: str) -> str:
 
 
 if __name__ == "__main__":
-    scrape_text("https://learn.utcode.net/docs/web-servers/linux-commands")
+    result = scrape_text("https://learn.utcode.net/docs/web-servers/linux-commands")
+    print(result)
