@@ -1,18 +1,19 @@
 {
-  "name": "quiz-rag",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "concurrently \"cd apps/frontend && bun dev\" \"cd apps/backend && bun dev\""
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "concurrently": "^9.2.1"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
-  "workspaces": [
-    "apps/*"
-  ]
+	"name": "quiz-rag",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "concurrently \"cd apps/frontend && bun dev\" \"cd apps/backend && bun dev\"",
+		"format": "bunx @biomejs/biome format --write ."
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"concurrently": "^9.2.1"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"workspaces": [
+		"apps/*"
+	]
 }
