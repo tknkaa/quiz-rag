@@ -18,8 +18,17 @@ export default function App() {
 		<div>
 			<form onSubmit={handleSubmit}>
 				<input value={theme} onChange={(e) => setTheme(e.target.value)} />
-				<button type="submit">generate quiz!</button>
+				<button type="submit">generate quiz</button>
 			</form>
+			<button
+				onClick={async () => {
+					const res = await client.index.$get();
+					const text = await res.text();
+					alert(text);
+				}}
+			>
+				say hello
+			</button>
 		</div>
 	);
 }
