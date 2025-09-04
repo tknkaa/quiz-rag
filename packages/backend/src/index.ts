@@ -9,7 +9,7 @@ type Bindings = {
 	GEMINI_API_KEY: string;
 };
 
-const app = new Hono<{ Bindings: Bindings }>();
+export const app = new Hono<{ Bindings: Bindings }>();
 const client = new QdrantClient({
 	url: "http://localhost:6333",
 });
