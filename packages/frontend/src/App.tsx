@@ -1,14 +1,25 @@
+import { useState, type FormEvent } from "react";
 import { client } from "./utils/client";
 
 export default function App() {
-	const handleClick = async () => {
-		const res = await client.index.$get();
-		const data = await res.text();
-		alert(data);
+	const [theme, setTheme] = useState("");
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault();
+		const res = await client.api.quiz.$post({
+			form: {
+				theme,
+			},
+		});
+		const quiz = await res.text();
+		alert(quiz);
 	};
+
 	return (
 		<div>
-			<button onClick={handleClick}>Click me</button>
+			<form onSubmit={handleSubmit}>
+				<input value={theme} onChange={(e) => setTheme(e.target.value)} />
+				<button type="submit">generate quiz!</button>
+			</form>
 		</div>
 	);
 }

@@ -3,8 +3,13 @@ import { cors } from "hono/cors";
 import { QdrantClient } from "@qdrant/js-client-rest";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
+import { GoogleGenAI } from "@google/genai";
 
-const app = new Hono();
+type Bindings = {
+	GEMINI_API_KEY: string;
+};
+
+const app = new Hono<{ Bindings: Bindings }>();
 const client = new QdrantClient({
 	url: "http://localhost:6333",
 });
@@ -21,18 +26,26 @@ const route = app
 		return c.text("Hello Hono!");
 	})
 	.post(
-		"/quiz",
+		"/api/quiz",
 		zValidator(
 			"form",
 			z.object({
-				prompt: z.string(),
+				theme: z.string(),
 			}),
 		),
-		(c) => {
-			return c.json({
-				ok: true,
-				quiz: "what is the best linux distro?",
+		async (c) => {
+			const { theme } = c.req.valid("form");
+			// define globally?
+			const ai = new GoogleGenAI({
+				apiKey: c.env.GEMINI_API_KEY,
 			});
+			const aiResponse = await ai.models.embedContent({
+				model: "gemini-embedding-001",
+				contents: theme,
+			});
+			const embedding = aiResponse.embeddings;
+			console.log(embedding);
+			return c.text("what is the best linux distro?");
 		},
 	);
 
