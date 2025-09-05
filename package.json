@@ -3,7 +3,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "concurrently \"cd packages/frontend && bun dev\" \"cd packages/backend && bun run src/dev-server.ts\"",
+		"dev": "concurrently \"cd packages/frontend && bun dev\" \"cd packages/backend && bun run src/index.ts\"",
 		"format": "bunx @biomejs/biome format --write ."
 	},
 	"devDependencies": {
