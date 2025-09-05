@@ -35,11 +35,8 @@ const route = app
 		),
 		async (c) => {
 			const { theme } = c.req.valid("form");
-			// define globally?
 			const ai = new GoogleGenAI({
-				// dev
-				apiKey: process.env.GEMINI_API_KEY,
-				// apiKey: c.env.GEMINI_API_KEY,
+				apiKey: c.env.GEMINI_API_KEY,
 			});
 			const aiResponse = await ai.models.embedContent({
 				model: "gemini-embedding-001",
