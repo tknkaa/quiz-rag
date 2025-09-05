@@ -3,7 +3,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "concurrently \"cd apps/frontend && bun dev\" \"cd apps/backend && bun dev\"",
+		"dev": "concurrently \"cd packages/frontend && bun dev\" \"cd packages/backend && bun dev\"",
 		"format": "bunx @biomejs/biome format --write ."
 	},
 	"devDependencies": {
@@ -14,6 +14,6 @@
 		"typescript": "^5"
 	},
 	"workspaces": [
-		"apps/*"
+		"packages/*"
 	]
 }
