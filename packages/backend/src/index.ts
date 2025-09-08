@@ -10,7 +10,7 @@ type Bindings = {
 };
 
 export const app = new Hono<{ Bindings: Bindings }>();
-const client = new QdrantClient({
+const qdrantClient = new QdrantClient({
 	url: "http://localhost:6333",
 });
 
@@ -41,9 +41,23 @@ const route = app
 			const aiResponse = await ai.models.embedContent({
 				model: "gemini-embedding-001",
 				contents: theme,
+				config: {
+					outputDimensionality: 768,
+				},
 			});
-			const embedding = aiResponse.embeddings;
+			if (!aiResponse.embeddings) {
+				return c.text("Failed to embed the prompt");
+			}
+			const embedding = aiResponse.embeddings[0].values;
 			console.log(embedding);
+			if (!embedding) {
+				return c.text("Failed to get vector");
+			}
+			const qdrant_res = await qdrantClient.search("utcode_learn", {
+				vector: embedding,
+				limit: 3,
+			});
+			console.log("search result", qdrant_res);
 			return c.text("what is the best linux distro?");
 		},
 	);
