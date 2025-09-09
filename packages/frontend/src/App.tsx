@@ -10,8 +10,8 @@ export default function App() {
 				theme,
 			},
 		});
-		const quiz = await res.text();
-		alert(quiz);
+		const quiz = await res.json();
+		console.log(quiz);
 	};
 
 	return (
