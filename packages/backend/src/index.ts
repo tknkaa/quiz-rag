@@ -3,7 +3,7 @@ import { cors } from "hono/cors";
 import { QdrantClient } from "@qdrant/js-client-rest";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 
 type Bindings = {
 	GEMINI_API_KEY: string;
@@ -46,19 +46,51 @@ const route = app
 				},
 			});
 			if (!aiResponse.embeddings) {
-				return c.text("Failed to embed the prompt");
+				return c.json({
+					status: "error",
+					message: "Failed to embed the theme",
+				});
 			}
 			const embedding = aiResponse.embeddings[0].values;
-			console.log(embedding);
 			if (!embedding) {
-				return c.text("Failed to get vector");
+				return c.json({ status: "error", message: "Failed to get vector" });
 			}
 			const qdrant_res = await qdrantClient.search("utcode_learn", {
 				vector: embedding,
 				limit: 3,
 			});
-			console.log("search result", qdrant_res);
-			return c.text("what is the best linux distro?");
+			const chunks = qdrant_res.map((res) => res.payload?.chunk);
+			let prompt = "Create Quiz and answer based on the following fact.\n";
+			for (let i = 0; i < chunks.length; i++) {
+				prompt += `Fact ${i}: ${chunks[i]}\n`;
+			}
+			const quiz = await ai.models.generateContent({
+				model: "gemini-2.5-flash",
+				contents: prompt,
+				config: {
+					responseMimeType: "application/json",
+					responseSchema: {
+						type: Type.OBJECT,
+						properties: {
+							quiz: {
+								type: Type.STRING,
+							},
+							answer: {
+								type: Type.STRING,
+							},
+						},
+					},
+				},
+			});
+			if (!quiz.text) {
+				return c.json({ status: "error", message: "Failed to generate quiz" });
+			}
+			const quizJSON: {
+				quiz: string;
+				answer: string;
+			} = JSON.parse(quiz.text);
+			console.log(quizJSON);
+			return c.json(quizJSON);
 		},
 	);
 
