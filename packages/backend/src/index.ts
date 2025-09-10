@@ -90,7 +90,7 @@ const route = app
 				answer: string;
 			} = JSON.parse(quiz.text);
 			console.log(quizJSON);
-			return c.json(quiz);
+			return c.json(quizJSON);
 		},
 	);
 
