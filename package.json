@@ -4,7 +4,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "concurrently \"cd packages/web && bun dev\" \"cd packages/server && bun dev\"",
-		"format": "bunx @biomejs/biome format --write ."
+		"format": "bunx @biomejs/biome format --write .",
+		"seed": "cd packages/qdrant && bun run index.ts"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
