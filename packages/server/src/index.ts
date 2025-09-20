@@ -5,6 +5,7 @@ import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { GoogleGenAI, Type } from "@google/genai";
 import { drizzle } from "drizzle-orm/d1";
+import { users } from "./schema";
 
 type Bindings = {
 	GEMINI_API_KEY: string;
@@ -21,7 +22,10 @@ app.use(
 );
 
 const route = app
-	.get("/", (c) => {
+	.get("/", async (c) => {
+		const db = drizzle(c.env.DB);
+		const result = await db.select().from(users);
+		console.log(result);
 		return c.text("Hello Hono!");
 	})
 	.post(

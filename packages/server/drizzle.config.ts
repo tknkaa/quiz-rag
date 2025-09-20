@@ -1,5 +1,7 @@
 import { defineConfig } from "drizzle-kit";
 
+// bunx drizzle-kit migrate
+// bunx wrangler d1 execute daily_code_learn --local --file=...sql
 export default defineConfig({
 	out: "./drizzle",
 	schema: "./src/schema.ts",
