@@ -83,22 +83,22 @@ async function main() {
 			scrapedText = await scrapeText(url);
 			if (!scrapeText) {
 				console.log(`Warning: No content scraped from ${url}`);
-				process.exit(1)
+				process.exit(1);
 			}
 		} catch (error) {
 			console.error(`Failed to scrape ${url}`);
-			process.exit(1)
+			process.exit(1);
 		}
 
 		try {
 			contents = await textSplitter.splitText(scrapedText);
 			if (!contents) {
 				console.error(`Failed to create chunks from ${url}`);
-				process.exit(1)
+				process.exit(1);
 			}
 		} catch (error) {
 			console.error(`Failed to split text from ${url}`);
-			process.exit(1)
+			process.exit(1);
 		}
 
 		const embeddings: ContentEmbedding[] = [];
@@ -109,8 +109,8 @@ async function main() {
 					model: "gemini-embedding-001",
 					contents: batch,
 					config: {
-						outputDimensionality: vectorSize
-					}
+						outputDimensionality: vectorSize,
+					},
 				});
 				if (result.embeddings) {
 					embeddings.push(...result.embeddings);
@@ -124,7 +124,7 @@ async function main() {
 			}
 		} catch (error) {
 			console.error(`Failed to generate embeddings for ${url}: ${error}`);
-			process.exit(1)
+			process.exit(1);
 		}
 
 		for (let i = 0; i < contents.length; i++) {
