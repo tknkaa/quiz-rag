@@ -1,5 +1,5 @@
 {
-	"name": "@packages/backend",
+	"name": "@packages/server",
 	"type": "module",
 	"scripts": {
 		"dev": "wrangler dev",
