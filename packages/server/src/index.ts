@@ -4,15 +4,14 @@ import { QdrantClient } from "@qdrant/js-client-rest";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { GoogleGenAI, Type } from "@google/genai";
+import { drizzle } from "drizzle-orm/d1";
 
 type Bindings = {
 	GEMINI_API_KEY: string;
+	DB: D1Database;
 };
 
 export const app = new Hono<{ Bindings: Bindings }>();
-const qdrantClient = new QdrantClient({
-	url: "http://localhost:6333",
-});
 
 app.use(
 	"*",
@@ -38,6 +37,11 @@ const route = app
 			const ai = new GoogleGenAI({
 				apiKey: c.env.GEMINI_API_KEY,
 			});
+
+			const qdrantClient = new QdrantClient({
+				url: "http://localhost:6333",
+			});
+			// const db = drizzle(c.env.DB)
 			const aiResponse = await ai.models.embedContent({
 				model: "gemini-embedding-001",
 				contents: theme,

@@ -2,7 +2,14 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "backend",
 	"main": "src/index.ts",
-	"compatibility_date": "2025-09-01"
+	"compatibility_date": "2025-09-01",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "daily_code_learn_prod",
+			"database_id": "2f274a54-4ec5-4541-9c40-7649b91ef8ca"
+		}
+	]
 	// "compatibility_flags": ["nodejs_compat"]
 	// "vars": {
 	//   "MY_VAR": "my-variable"
